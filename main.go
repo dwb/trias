@@ -228,11 +228,13 @@ func handleProxyConnect(w http.ResponseWriter, r *http.Request, sshClient *kepta
 
 	go func() {
 		io.Copy(httpBuf, remote)
+		httpConn.Close()
 		wg.Done()
 	}()
 
 	go func() {
 		io.Copy(remote, httpBuf)
+		remote.Close()
 		wg.Done()
 	}()
 
